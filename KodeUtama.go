@@ -36,26 +36,25 @@ func tampilMenu() {
 	fmt.Println("1. Tambah Data Member")
 	fmt.Println("2. Ubah Data Member")
 	fmt.Println("3. Hapus Data Member")
-	fmt.Println("4. Catat Kunjungan Pengunjung")
+	fmt.Println("4. Catat Kunjungan Member")
 	fmt.Println("5. Cari Data Member")
 	fmt.Println("6. Tampilkan Data Member")
 	fmt.Println("7. Urutkan Data Member")
 	fmt.Println("8. Tampilkan Top 3 Member Paling Aktif")
-	fmt.Println("9. Keluar")
+	fmt.Println("9. Catat Kunjungan Harian (Non-Member)")
+	fmt.Println("10. Laporan Pendapatan Gym")
+	fmt.Println("11. Keluar")
 	fmt.Println("=====================================================")
 }
 
 func main() {
-
 	var pilihan int
-
 	var data tabMember
 	var n int
+	var totalNonMember int
 
-	for pilihan != 9 {
-
+	for pilihan != 11 {
 		tampilMenu()
-
 		fmt.Print("Pilih menu : ")
 		fmt.Scan(&pilihan)
 
@@ -80,14 +79,21 @@ func main() {
 			tampilMember(data, n)
 
 		case 7:
-			fmt.Println()
-			fmt.Println("===== URUTKAN DATA MEMBER =====")
+			urutkanMember(&data, n)
 
 		case 8:
-			fmt.Println()
-			fmt.Println("===== TOP 3 MEMBER PALING AKTIF =====")
+			topTigaMember(data, n)
 
 		case 9:
+			fmt.Println()
+			fmt.Println("===== CATAT KUNJUNGAN NON-MEMBER =====")
+			totalNonMember++
+			fmt.Println("Berhasil mencatat 1 pengunjung harian (Rp 50.000)")
+
+		case 10:
+			laporanPendapatan(data, n, totalNonMember)
+
+		case 11:
 			fmt.Println()
 			fmt.Println("Terima kasih telah menggunakan program")
 
@@ -344,4 +350,110 @@ func tampilMember(A tabMember, n int) {
 			A[i].bulanTerakhir,
 			A[i].tahunTerakhir)
 	}
+}
+
+func urutkanMember(A *tabMember, n int) {
+	fmt.Println()
+	fmt.Println("===== URUTKAN DATA MEMBER (BERDASARKAN KUNJUNGAN) =====")
+
+	if n == 0 {
+		fmt.Println("Belum ada data member.")
+		return
+	}
+
+	// Menggunakan algoritma Selection Sort (Descending)
+	for i := 0; i < n-1; i++ {
+		maxIdx := i
+		for j := i + 1; j < n; j++ {
+			// Jika kunjungan lebih besar, jadikan nilai maksimum baru
+			if A[j].kunjungan > A[maxIdx].kunjungan {
+				maxIdx = j
+			}
+		}
+		// Tukar posisi data (Swap)
+		temp := A[i]
+		A[i] = A[maxIdx]
+		A[maxIdx] = temp
+	}
+
+	fmt.Println("Data berhasil diurutkan berdasarkan kunjungan terbanyak!")
+	// Langsung tampilkan hasilnya
+	tampilMember(*A, n)
+}
+
+func topTigaMember(A tabMember, n int) {
+	fmt.Println()
+	fmt.Println("===== TOP 3 MEMBER PALING AKTIF =====")
+
+	if n == 0 {
+		fmt.Println("Belum ada data member.")
+		return
+	}
+
+	// Urutkan data salinan (Descending)
+	for i := 0; i < n-1; i++ {
+		maxIdx := i
+		for j := i + 1; j < n; j++ {
+			if A[j].kunjungan > A[maxIdx].kunjungan {
+				maxIdx = j
+			}
+		}
+		temp := A[i]
+		A[i] = A[maxIdx]
+		A[maxIdx] = temp
+	}
+
+	// Tentukan batas maksimal yang ditampilkan (3 data)
+	batas := 3
+	if n < 3 {
+		batas = n
+	}
+
+	fmt.Println("=========================================================================================================")
+	fmt.Printf("%-6s %-15s %-12s %-8s %-10s %-15s %-15s\n",
+		"ID", "Nama", "Member", "Durasi", "Kunjungan", "Total Latihan", "Tgl Terakhir")
+	fmt.Println("=========================================================================================================")
+
+	for i := 0; i < batas; i++ {
+		fmt.Printf("%-6s %-15s %-12s %-8d %-10d %-15s %02d/%02d/%04d\n",
+			A[i].id,
+			A[i].nama,
+			A[i].membership,
+			A[i].durasiMember,
+			A[i].kunjungan,
+			fmt.Sprintf("%d Menit", A[i].totalLatihan),
+			A[i].tanggalTerakhir,
+			A[i].bulanTerakhir,
+			A[i].tahunTerakhir)
+	}
+}
+
+func laporanPendapatan(A tabMember, n int, kunjunganNonMember int) {
+	fmt.Println()
+	fmt.Println("=====================================================")
+	fmt.Println("               LAPORAN PENDAPATAN GYM")
+	fmt.Println("=====================================================")
+
+	var totalBasic, totalPremium int
+
+	// Hitung pendapatan dari Member yang terdaftar
+	for i := 0; i < n; i++ {
+		if A[i].membership == "Basic" {
+			totalBasic += A[i].durasiMember * 250000
+		} else if A[i].membership == "Premium" {
+			totalPremium += A[i].durasiMember * 350000
+		}
+	}
+
+	// Hitung pendapatan dari Non-Member (Per datang)
+	pendapatanNonMember := kunjunganNonMember * 50000
+	pendapatanMember := totalBasic + totalPremium
+	totalKeseluruhan := pendapatanNonMember + pendapatanMember
+
+	fmt.Printf("1. Kunjungan Harian (%d kali) : Rp %d\n", kunjunganNonMember, pendapatanNonMember)
+	fmt.Printf("2. Total Pendaftaran Basic   : Rp %d\n", totalBasic)
+	fmt.Printf("3. Total Pendaftaran Premium : Rp %d\n", totalPremium)
+	fmt.Println("-----------------------------------------------------")
+	fmt.Printf("TOTAL PENDAPATAN KESELURUHAN : Rp %d\n", totalKeseluruhan)
+	fmt.Println("=====================================================")
 }
