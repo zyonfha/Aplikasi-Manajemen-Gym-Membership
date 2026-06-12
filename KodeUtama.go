@@ -358,27 +358,26 @@ func urutkanMember(A *tabMember, n int) {
 
 	if n == 0 {
 		fmt.Println("Belum ada data member.")
-		return
-	}
-
-	// Menggunakan algoritma Selection Sort (Descending)
-	for i := 0; i < n-1; i++ {
-		maxIdx := i
-		for j := i + 1; j < n; j++ {
-			// Jika kunjungan lebih besar, jadikan nilai maksimum baru
-			if A[j].kunjungan > A[maxIdx].kunjungan {
-				maxIdx = j
+	} else {
+		// Menggunakan algoritma Selection Sort (Descending)
+		for i := 0; i < n-1; i++ {
+			maxIdx := i
+			for j := i + 1; j < n; j++ {
+				// Jika kunjungan lebih besar, jadikan nilai maksimum baru
+				if A[j].kunjungan > A[maxIdx].kunjungan {
+					maxIdx = j
+				}
 			}
+			// Tukar posisi data (Swap)
+			temp := A[i]
+			A[i] = A[maxIdx]
+			A[maxIdx] = temp
 		}
-		// Tukar posisi data (Swap)
-		temp := A[i]
-		A[i] = A[maxIdx]
-		A[maxIdx] = temp
-	}
 
-	fmt.Println("Data berhasil diurutkan berdasarkan kunjungan terbanyak!")
-	// Langsung tampilkan hasilnya
-	tampilMember(*A, n)
+		fmt.Println("Data berhasil diurutkan berdasarkan kunjungan terbanyak!")
+		// Langsung tampilkan hasilnya
+		tampilMember(*A, n)
+	}
 }
 
 func topTigaMember(A tabMember, n int) {
