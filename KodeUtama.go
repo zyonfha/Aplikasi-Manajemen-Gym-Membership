@@ -101,20 +101,15 @@ func main() {
 }
 
 func tambahMember(A *tabMember, n *int) {
-
 	var pilih int
-
 	fmt.Println()
 	fmt.Println("===== TAMBAH DATA MEMBER =====")
 
 	A[*n].id = fmt.Sprintf("%03d", nextID)
 	nextID++
-
 	fmt.Println("ID Member :", A[*n].id)
-
 	fmt.Print("Nama Member : ")
 	fmt.Scan(&A[*n].nama)
-
 	fmt.Println("Jenis Membership")
 	fmt.Println("1. Basic")
 	fmt.Println("2. Premium")
@@ -139,7 +134,6 @@ func tambahMember(A *tabMember, n *int) {
 }
 
 func ubahMember(A *tabMember, n int) {
-
 	var id string
 	var i int
 	var ketemu bool
@@ -153,11 +147,8 @@ func ubahMember(A *tabMember, n int) {
 
 	i = 0
 	for i < n && !ketemu {
-
 		if A[i].id == id {
-
 			ketemu = true
-
 			fmt.Print("Nama Baru : ")
 			fmt.Scan(&A[i].nama)
 
@@ -178,10 +169,8 @@ func ubahMember(A *tabMember, n int) {
 
 			fmt.Println("Data berhasil diubah")
 		}
-
 		i++
 	}
-
 	if !ketemu {
 		fmt.Println("Member tidak ditemukan")
 	}
@@ -195,39 +184,30 @@ func hapusMember(A *tabMember, n *int) {
 
 	fmt.Println()
 	fmt.Println("===== HAPUS DATA MEMBER =====")
-
 	fmt.Print("Masukkan ID Member : ")
 	fmt.Scan(&id)
 
 	for i = 0; i < *n; i++ {
-
 		if A[i].id == id {
 			idx = i
 		}
 	}
 
 	if idx == -1 {
-
 		fmt.Println("Member tidak ditemukan")
-
 	} else {
-
 		for i = idx; i < *n-1; i++ {
 			A[i] = A[i+1]
 		}
-
 		*n = *n - 1
-
 		fmt.Println("Data berhasil dihapus")
 	}
 }
 
 func catatKunjungan(A *tabMember, n int) {
-
 	var id string
 	var durasi int
 	var tanggal, bulan, tahun int
-
 	var i int
 	var ketemu bool
 
@@ -238,9 +218,7 @@ func catatKunjungan(A *tabMember, n int) {
 	fmt.Scan(&id)
 
 	for i = 0; i < n && !ketemu; i++ {
-
 		if A[i].id == id {
-
 			ketemu = true
 
 			fmt.Print("Tanggal (dd mm yyyy) : ")
@@ -249,14 +227,12 @@ func catatKunjungan(A *tabMember, n int) {
 			if A[i].tahunTerakhir != 0 {
 
 				if tahun < A[i].tahunTerakhir {
-
 					fmt.Println("Tanggal tidak valid")
 					fmt.Println("Tahun tidak boleh lebih kecil dari kunjungan terakhir")
 					return
 
 				} else if tahun == A[i].tahunTerakhir &&
 					bulan < A[i].bulanTerakhir {
-
 					fmt.Println("Tanggal tidak valid")
 					fmt.Println("Bulan tidak boleh lebih kecil dari kunjungan terakhir")
 					return
@@ -276,7 +252,6 @@ func catatKunjungan(A *tabMember, n int) {
 
 			A[i].kunjungan++
 			A[i].totalLatihan += durasi
-
 			A[i].tanggalTerakhir = tanggal
 			A[i].bulanTerakhir = bulan
 			A[i].tahunTerakhir = tahun
@@ -291,23 +266,18 @@ func catatKunjungan(A *tabMember, n int) {
 }
 
 func cariMember(A tabMember, n int) {
-
 	var nama string
 	var i int
 	var ketemu bool
 
 	fmt.Println()
 	fmt.Println("===== CARI DATA MEMBER =====")
-
 	fmt.Print("Masukkan Nama : ")
 	fmt.Scan(&nama)
 
 	for i = 0; i < n; i++ {
-
 		if A[i].nama == nama {
-
 			ketemu = true
-
 			fmt.Println()
 			fmt.Println("Data Ditemukan")
 			fmt.Println("ID         :", A[i].id)
@@ -324,7 +294,6 @@ func cariMember(A tabMember, n int) {
 }
 
 func tampilMember(A tabMember, n int) {
-
 	var i int
 
 	fmt.Println()
@@ -334,7 +303,6 @@ func tampilMember(A tabMember, n int) {
 	fmt.Println("=========================================================================================================")
 
 	for i = 0; i < n; i++ {
-
 		fmt.Printf("%-6s %-15s %-12s %-8d %-10d %-15s %02d/%02d/%04d\n",
 			A[i].id,
 			A[i].nama,
@@ -404,24 +372,7 @@ func topTigaMember(A tabMember, n int) {
 	if n < 3 {
 		batas = n
 	}
-
-	fmt.Println("=========================================================================================================")
-	fmt.Printf("%-6s %-15s %-12s %-8s %-10s %-15s %-15s\n",
-		"ID", "Nama", "Member", "Durasi", "Kunjungan", "Total Latihan", "Tgl Terakhir")
-	fmt.Println("=========================================================================================================")
-
-	for i := 0; i < batas; i++ {
-		fmt.Printf("%-6s %-15s %-12s %-8d %-10d %-15s %02d/%02d/%04d\n",
-			A[i].id,
-			A[i].nama,
-			A[i].membership,
-			A[i].durasiMember,
-			A[i].kunjungan,
-			fmt.Sprintf("%d Menit", A[i].totalLatihan),
-			A[i].tanggalTerakhir,
-			A[i].bulanTerakhir,
-			A[i].tahunTerakhir)
-	}
+	tampilMember(A, batas)
 }
 
 func laporanPendapatan(A tabMember, n int, kunjunganNonMember int) {
