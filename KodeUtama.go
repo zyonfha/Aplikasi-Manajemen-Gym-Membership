@@ -77,19 +77,19 @@ func main() {
 		case 6:
 			urutkanMember(&data, n)
 
-		case 8:
+		case 7:
 			topTigaMember(data, n)
 
-		case 9:
+		case 8:
 			fmt.Println()
 			fmt.Println("===== CATAT KUNJUNGAN NON-MEMBER =====")
 			totalNonMember++
 			fmt.Println("Berhasil mencatat 1 pengunjung harian (Rp 50.000)")
 
-		case 10:
+		case 9:
 			laporanPendapatan(data, n, totalNonMember)
 
-		case 11:
+		case 10:
 			fmt.Println()
 			fmt.Println("Terima kasih telah menggunakan program")
 
