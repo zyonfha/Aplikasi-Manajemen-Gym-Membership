@@ -38,12 +38,11 @@ func tampilMenu() {
 	fmt.Println("3. Hapus Data Member")
 	fmt.Println("4. Catat Kunjungan Member")
 	fmt.Println("5. Cari Data Member")
-	fmt.Println("6. Tampilkan Data Member")
-	fmt.Println("7. Urutkan Data Member")
-	fmt.Println("8. Tampilkan Top 3 Member Paling Aktif")
-	fmt.Println("9. Catat Kunjungan Harian (Non-Member)")
-	fmt.Println("10. Laporan Pendapatan Gym")
-	fmt.Println("11. Keluar")
+	fmt.Println("6. Menampilkan Urutkan Data Member")
+	fmt.Println("7. Tampilkan Top 3 Member Paling Aktif")
+	fmt.Println("8. Catat Kunjungan Harian (Non-Member)")
+	fmt.Println("9. Laporan Pendapatan Gym")
+	fmt.Println("10. Keluar")
 	fmt.Println("=====================================================")
 }
 
@@ -76,9 +75,6 @@ func main() {
 			cariMember(data, n)
 
 		case 6:
-			tampilMember(data, n)
-
-		case 7:
 			urutkanMember(&data, n)
 
 		case 8:
@@ -358,26 +354,27 @@ func urutkanMember(A *tabMember, n int) {
 
 	if n == 0 {
 		fmt.Println("Belum ada data member.")
-	} else {
-		// Menggunakan algoritma Selection Sort (Descending)
-		for i := 0; i < n-1; i++ {
-			maxIdx := i
-			for j := i + 1; j < n; j++ {
-				// Jika kunjungan lebih besar, jadikan nilai maksimum baru
-				if A[j].kunjungan > A[maxIdx].kunjungan {
-					maxIdx = j
-				}
-			}
-			// Tukar posisi data (Swap)
-			temp := A[i]
-			A[i] = A[maxIdx]
-			A[maxIdx] = temp
-		}
-
-		fmt.Println("Data berhasil diurutkan berdasarkan kunjungan terbanyak!")
-		// Langsung tampilkan hasilnya
-		tampilMember(*A, n)
+		return
 	}
+
+	// Menggunakan algoritma Selection Sort (Descending)
+	for i := 0; i < n-1; i++ {
+		maxIdx := i
+		for j := i + 1; j < n; j++ {
+			// Jika kunjungan lebih besar, jadikan nilai maksimum baru
+			if A[j].kunjungan > A[maxIdx].kunjungan {
+				maxIdx = j
+			}
+		}
+		// Tukar posisi data (Swap)
+		temp := A[i]
+		A[i] = A[maxIdx]
+		A[maxIdx] = temp
+	}
+
+	fmt.Println("Data berhasil diurutkan berdasarkan kunjungan terbanyak!")
+	// Langsung tampilkan hasilnya
+	tampilMember(*A, n)
 }
 
 func topTigaMember(A tabMember, n int) {
