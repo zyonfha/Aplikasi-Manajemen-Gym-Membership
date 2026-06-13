@@ -28,33 +28,33 @@ type tabKunjungan [NMAX]kunjungan
 
 // Inisialisasi data dummy
 func initDummyData(A *tabMember, n *int, nextID *int) {
-    A[0] = member{id: "001", nama: "Budi", membership: "Basic", durasiMember: 6, kunjungan: 12, totalLatihan: 720, tanggalTerakhir: 1, bulanTerakhir: 6, tahunTerakhir: 2026}
-    A[1] = member{id: "002", nama: "Siti", membership: "Premium", durasiMember: 12, kunjungan: 45, totalLatihan: 2700, tanggalTerakhir: 10, bulanTerakhir: 6, tahunTerakhir: 2026}
-    A[2] = member{id: "003", nama: "Andi", membership: "Basic", durasiMember: 1, kunjungan: 2, totalLatihan: 120, tanggalTerakhir: 5, bulanTerakhir: 6, tahunTerakhir: 2026}
-    A[3] = member{id: "004", nama: "Joko", membership: "Premium", durasiMember: 3, kunjungan: 0, totalLatihan: 0, tanggalTerakhir: 0, bulanTerakhir: 0, tahunTerakhir: 0}
-    A[4] = member{id: "005", nama: "Rina", membership: "Basic", durasiMember: 24, kunjungan: 30, totalLatihan: 1800, tanggalTerakhir: 12, bulanTerakhir: 6, tahunTerakhir: 2026}
-    
-    *n = 5
-    *nextID = 6 // Karena sudah ada 5 data
+	A[0] = member{id: "001", nama: "Budi", membership: "Basic", durasiMember: 6, kunjungan: 12, totalLatihan: 720, tanggalTerakhir: 1, bulanTerakhir: 6, tahunTerakhir: 2026}
+	A[1] = member{id: "002", nama: "Siti", membership: "Premium", durasiMember: 12, kunjungan: 45, totalLatihan: 2700, tanggalTerakhir: 10, bulanTerakhir: 6, tahunTerakhir: 2026}
+	A[2] = member{id: "003", nama: "Andi", membership: "Basic", durasiMember: 1, kunjungan: 2, totalLatihan: 120, tanggalTerakhir: 5, bulanTerakhir: 6, tahunTerakhir: 2026}
+	A[3] = member{id: "004", nama: "Joko", membership: "Premium", durasiMember: 3, kunjungan: 0, totalLatihan: 0, tanggalTerakhir: 0, bulanTerakhir: 0, tahunTerakhir: 0}
+	A[4] = member{id: "005", nama: "Rina", membership: "Basic", durasiMember: 24, kunjungan: 30, totalLatihan: 1800, tanggalTerakhir: 12, bulanTerakhir: 6, tahunTerakhir: 2026}
+
+	*n = 5
+	*nextID = 6 // Karena sudah ada 5 data
 }
 
 // Algoritma Binary Search berdasarkan ID
 func binarySearchID(A tabMember, n int, id string) int {
-    var kiri, kanan, tengah int
-    kiri = 0
-    kanan = n - 1
+	var kiri, kanan, tengah int
+	kiri = 0
+	kanan = n - 1
 
-    for kiri <= kanan {
-        tengah = (kiri + kanan) / 2
-        if A[tengah].id == id {
-            return tengah
-        } else if A[tengah].id < id {
-            kiri = tengah + 1
-        } else {
-            kanan = tengah - 1
-        }
-    }
-    return -1
+	for kiri <= kanan {
+		tengah = (kiri + kanan) / 2
+		if A[tengah].id == id {
+			return tengah
+		} else if A[tengah].id < id {
+			kiri = tengah + 1
+		} else {
+			kanan = tengah - 1
+		}
+	}
+	return -1
 }
 
 func tampilMenu() {
@@ -315,6 +315,8 @@ func tampilMember(A tabMember, n int) {
 func urutkanMember(A tabMember, n int) {
 	var i, j, maxIdx int
 	var temp member
+	var pilihan int
+	var isAscending bool
 
 	fmt.Println()
 	fmt.Println("===== URUTKAN DATA MEMBER (SELECTION SORT - KUNJUNGAN) =====")
@@ -323,13 +325,29 @@ func urutkanMember(A tabMember, n int) {
 		fmt.Println("Belum ada data member.")
 		return
 	}
+	fmt.Println("1. Ascending (Terkecil ke Terbesar)")
+	fmt.Println("2. Descending (Terbesar ke Terkecil)")
+	fmt.Print("Pilih Urutan: ")
+	fmt.Scan(&pilihan)
+
+	isAscending = false
+	if pilihan == 1 {
+		isAscending = true
+	}
 
 	for i = 0; i < n-1; i++ {
 		maxIdx = i
 		for j = i + 1; j < n; j++ {
-			if A[j].kunjungan > A[maxIdx].kunjungan {
-				maxIdx = j
+			if isAscending {
+				if A[j].kunjungan < A[maxIdx].kunjungan {
+					maxIdx = j
+				}
+			} else {
+				if A[j].kunjungan > A[maxIdx].kunjungan {
+					maxIdx = j
+				}
 			}
+
 		}
 		temp = A[i]
 		A[i] = A[maxIdx]
