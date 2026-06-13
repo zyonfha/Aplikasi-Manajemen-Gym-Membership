@@ -38,25 +38,6 @@ func initDummyData(A *tabMember, n *int, nextID *int) {
 	*nextID = 6 // Karena sudah ada 5 data
 }
 
-// Algoritma Binary Search berdasarkan ID
-func binarySearchID(A tabMember, n int, id string) int {
-	var kiri, kanan, tengah int
-	kiri = 0
-	kanan = n - 1
-
-	for kiri <= kanan {
-		tengah = (kiri + kanan) / 2
-		if A[tengah].id == id {
-			return tengah
-		} else if A[tengah].id < id {
-			kiri = tengah + 1
-		} else {
-			kanan = tengah - 1
-		}
-	}
-	return -1
-}
-
 func tampilMenu() {
 	fmt.Println()
 	fmt.Println("=====================================================")
@@ -124,6 +105,25 @@ func main() {
 			fmt.Println("Menu tidak tersedia")
 		}
 	}
+}
+
+// Algoritma Binary Search berdasarkan ID
+func binarySearchID(A tabMember, n int, id string) int {
+	var kiri, kanan, tengah int
+	kiri = 0
+	kanan = n - 1
+
+	for kiri <= kanan {
+		tengah = (kiri + kanan) / 2
+		if A[tengah].id == id {
+			return tengah
+		} else if A[tengah].id < id {
+			kiri = tengah + 1
+		} else {
+			kanan = tengah - 1
+		}
+	}
+	return -1
 }
 
 func tambahMember(A *tabMember, n *int, nextID *int) {
